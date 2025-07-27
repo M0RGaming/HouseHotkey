@@ -285,7 +285,7 @@ function HH.BuildMenu()
   local houseItems = HH.GetHouseDropdownChoices()
 
   local panel = LAM:AddAddon(HH.Name, {
-    allowDefaults = true,  -- Show "Reset to Defaults" button
+    allowDefaults = false,  -- Show "Reset to Defaults" button
     allowRefresh = false    -- Enable automatic control updates
   })
 
