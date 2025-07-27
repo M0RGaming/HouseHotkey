@@ -17,6 +17,30 @@ HH.Default = {
   },
 }
 
+local PREVIEW_PRELOADED_HOUSES = {
+  1060,   -- Mara's Kiss Public House
+  1061,   -- The Rosy Lion
+  1062,   -- The Ebony Flask Inn Room
+  1063,   -- Barbed Hook Private Room
+  1064,   -- Sisters of the Sands Inn Room
+  1065,   -- Flaming Nix Deluxe Garret
+  1066,   -- Black Vine Villa
+  1069,   -- HumbleMud
+  1070,   -- The Ample Domicile
+  1072,   -- Snugpod
+  1073,   -- Bouldertree Refuge
+  1075,   -- Captain Margaux's Place
+  1077,   -- Gardner House
+  1078,   -- Kragenhome
+  1081,   -- Moonmirth House
+  1084,   -- Cyrodilic Jungle House
+  1087,   -- Autumn's Gate
+  1091,   -- Mournoth Keep
+  1243,   -- Amaya Lake Lodge
+  1310,   -- Exorcised Coven Cottage
+}
+
+
 --[[ Structure
 
   [HOTBAR_CATEGORY_XX] = {
@@ -96,7 +120,7 @@ end
 
 -- /script HouseHotkey.Execute()
 function HH.Execute(Text, Exterior, HouseOwner)
-  if HouseOwner ~= "self" then
+  if HouseOwner ~= "self" and HouseOwner ~= HH.Lang.HOUSE_PREVIEW_EXPLAIN then
     JumpToSpecificHouse(HouseOwner, Text)
   else
     RequestJumpToHouse(Text, Exterior)
@@ -153,10 +177,38 @@ HH.IconList = {
   "/esoui/art/vendor/vendor_tabicon_fence_up.dds",
 }
 
+function HH.GetPreviewHouseOption()
+  local previewHouse = {}
+  local checkHouse = {}
+  local lockedHouses = {}
+  for index, entry in ipairs(PREVIEW_PRELOADED_HOUSES) do
+    checkHouse = ZO_COLLECTIBLE_DATA_MANAGER:GetCollectibleDataById(entry)
+    if checkHouse then
+      if checkHouse:IsHouse() and checkHouse:IsLocked() then
+        previewHouse = {
+           name = "["..HH.Lang.HOUSE_RETURN.."] "..checkHouse:GetFormattedName(), data = {id = checkHouse:GetReferenceId(), owner = HH.Lang.HOUSE_PREVIEW_EXPLAIN}
+        }
+        break
+      end
+    end
+  end
+  if not checkHouse then
+    lockedHouses = ZO_COLLECTIBLE_DATA_MANAGER:GetAllCollectibleDataObjects({ ZO_CollectibleCategoryData.IsHousingCategory }, { ZO_CollectibleData.IsLocked }, { ZO_CollectibleData.IsPurchasable })
+    if #lockedHouses > 0 then
+      previewHouse = {
+         name = "["..HH.Lang.HOUSE_RETURN.."] "..lockedHouses[1]:GetFormattedName(), data = {id = lockedHouses[1]:GetReferenceId(), owner = HH.Lang.HOUSE_PREVIEW_EXPLAIN}
+      }
+    end
+  end
+  return previewHouse
+end
+
 function HH.GetHouseDropdownChoices()
     local collectibleData = ZO_COLLECTIBLE_DATA_MANAGER:GetAllCollectibleDataObjects({ ZO_CollectibleCategoryData.IsHousingCategory }, { ZO_CollectibleData.IsUnlocked })
     local ownedHouseItems = {}
+    local previewHouse = HH.GetPreviewHouseOption()
     local counter = 0
+    local counter2 = 1
     -- Owned houses
     for index, entry in ipairs(collectibleData) do
         if (entry:IsHouse()) then
@@ -179,8 +231,16 @@ function HH.GetHouseDropdownChoices()
         name = "[FAV] "..entry:GetHouseName(), data = {id = entry:GetHouseId(), owner = entry:GetOwnerDisplayName()}
       }
       ownedHouseItems[counter + index] = houseEntry
+      counter2 = counter2 + 1
     end
-  return ownedHouseItems
+
+    -- Preview House
+    if previewHouse then
+      local total = counter + counter2
+      ownedHouseItems[total] = previewHouse
+    end
+
+    return ownedHouseItems
 end
 
 function HH.Part(Index)
@@ -228,7 +288,7 @@ function HH.BuildMenu()
     allowDefaults = true,  -- Show "Reset to Defaults" button
     allowRefresh = false    -- Enable automatic control updates
   })
-  
+
   --Option Part
   local Category, CategoryName, EntryIndex, EntryIndexName, Icon, IconName, Name, House, HouseName, HouseId, HouseOwner, Status
   local Category2, CategoryName2, EntryIndex2, EntryIndexName2
