@@ -502,8 +502,10 @@ if #houseItems > 0 then
     label = HH.Lang.WHEEL_DELETE,
     buttonText = HH.Lang.WHEEL_DELETE,
     clickHandler = function()
-      HH.SV.Command[Category2 or HOTBAR_CATEGORY_QUICKSLOT_WHEEL][EntryIndex2 or 4] = nil
-      panel:UpdateControls()
+      if EntryIndex2 then
+        HH.SV.Command[Category2 or HOTBAR_CATEGORY_QUICKSLOT_WHEEL][EntryIndex2] = nil
+        panel:UpdateControls()
+      end
     end,
   }
   else
