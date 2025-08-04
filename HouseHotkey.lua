@@ -466,7 +466,7 @@ if #houseItems > 0 then
     default = GetString(SI_HOTBARCATEGORY10),
   }
   --Index
-  panel:AddSetting {
+  local entryIndexDropdown = panel:AddSetting {
     type = LAM.ST_DROPDOWN,
     label = HH.Lang.WHEEL_SLOT,
     items = {
@@ -504,6 +504,9 @@ if #houseItems > 0 then
     clickHandler = function()
       if EntryIndex2 then
         HH.SV.Command[Category2 or HOTBAR_CATEGORY_QUICKSLOT_WHEEL][EntryIndex2] = nil
+        panel:UpdateControls()
+      elseif entryIndexDropdown:getFunction() == "1 - N" then
+        HH.SV.Command[Category2 or HOTBAR_CATEGORY_QUICKSLOT_WHEEL][4] = nil
         panel:UpdateControls()
       end
     end,
