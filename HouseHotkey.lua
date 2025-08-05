@@ -479,12 +479,11 @@ if #houseItems > 0 then
       { name = "7 - E", data = 2 },
       { name = "8 - NE", data = 3 },
     },
-    getFunction = function() return EntryIndexName or "1 - N" end,
+    getFunction = function() return EntryIndexName2 or "1 - N" end,
     setFunction = function(var, itemName, itemData)
       EntryIndexName2 = itemName
       EntryIndex2 = tonumber(itemData.data)
     end,
-    default = "1 - N",
   }
   --Empty
   panel:AddSetting {
