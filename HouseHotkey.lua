@@ -245,7 +245,7 @@ end
 
 function HH.Part(Index)
   local Positons = {"1 - N    ", "2 - NW", "3 - W   ", "4 - SW", "5 - S    ", "6 - SE  ", "7 - E    ", "8 - NE "}
-  local Order = {4, 5, 2, 7, 8, 1, 6, 3}
+  local Order = {4, 5, 6, 7, 8, 1, 2, 3}
   local StringList = {SI_HOTBARCATEGORY10, SI_HOTBARCATEGORY11, SI_HOTBARCATEGORY12, SI_HOTBARCATEGORY13, SI_HOTBARCATEGORY14}
   local Tep = GetString(StringList[Index - 9]).."\r\n  "
   if HH.SV.Command[Index] then
@@ -332,11 +332,11 @@ if #houseItems > 0 then
     items = {
       { name = "1 - N", data = 4 },
       { name = "2 - NW", data = 5 },
-      { name = "3 - W", data = 2 },
+      { name = "3 - W", data = 6 },
       { name = "4 - SW", data = 7 },
       { name = "5 - S", data = 8 },
       { name = "6 - SE", data = 1 },
-      { name = "7 - E", data = 6 },
+      { name = "7 - E", data = 2 },
       { name = "8 - NE", data = 3 },
     },
     getFunction = function() return EntryIndexName or "1 - N" end,
@@ -472,19 +472,18 @@ if #houseItems > 0 then
     items = {
       { name = "1 - N", data = 4 },
       { name = "2 - NW", data = 5 },
-      { name = "3 - W", data = 2 },
+      { name = "3 - W", data = 6 },
       { name = "4 - SW", data = 7 },
       { name = "5 - S", data = 8 },
       { name = "6 - SE", data = 1 },
-      { name = "7 - E", data = 6 },
+      { name = "7 - E", data = 2 },
       { name = "8 - NE", data = 3 },
     },
-    getFunction = function() return EntryIndexName or "1 - N" end,
+    getFunction = function() return EntryIndexName2 or "1 - N" end,
     setFunction = function(var, itemName, itemData)
       EntryIndexName2 = itemName
       EntryIndex2 = tonumber(itemData.data)
     end,
-    default = "1 - N",
   }
   --Empty
   panel:AddSetting {
@@ -505,7 +504,7 @@ if #houseItems > 0 then
       if EntryIndex2 then
         HH.SV.Command[Category2 or HOTBAR_CATEGORY_QUICKSLOT_WHEEL][EntryIndex2] = nil
         panel:UpdateControls()
-      elseif entryIndexDropdown:getFunction() == "1 - N" then
+      else
         HH.SV.Command[Category2 or HOTBAR_CATEGORY_QUICKSLOT_WHEEL][4] = nil
         panel:UpdateControls()
       end
