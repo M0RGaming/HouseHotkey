@@ -505,7 +505,7 @@ if #houseItems > 0 then
       if EntryIndex2 then
         HH.SV.Command[Category2 or HOTBAR_CATEGORY_QUICKSLOT_WHEEL][EntryIndex2] = nil
         panel:UpdateControls()
-      elseif entryIndexDropdown:getFunction() == "1 - N" then
+      else
         HH.SV.Command[Category2 or HOTBAR_CATEGORY_QUICKSLOT_WHEEL][4] = nil
         panel:UpdateControls()
       end
