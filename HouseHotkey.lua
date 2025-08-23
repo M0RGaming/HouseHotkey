@@ -430,23 +430,25 @@ if #houseItems > 0 then
       return Status or " "
     end
   }
-  --Configured
-  panel:AddSetting {
-    type = LAM.ST_SECTION,
-    label = HH.Lang.WHEEL_DESC,
-  }
-  panel:AddSetting {
-		type = LAM.ST_LABEL,
-    label = function()
-      return table.concat({
-        HH.Part(HOTBAR_CATEGORY_QUICKSLOT_WHEEL),
-        HH.Part(HOTBAR_CATEGORY_ALLY_WHEEL),
-        HH.Part(HOTBAR_CATEGORY_MEMENTO_WHEEL),
-        HH.Part(HOTBAR_CATEGORY_TOOL_WHEEL),
-        HH.Part(HOTBAR_CATEGORY_EMOTE_WHEEL)
-      })
-    end
-  }
+  if ZO_IsConsoleUI() then
+    --Configured
+    panel:AddSetting {
+      type = LAM.ST_SECTION,
+      label = HH.Lang.WHEEL_DESC,
+    }
+    panel:AddSetting {
+      type = LAM.ST_LABEL,
+      label = function()
+        return table.concat({
+          HH.Part(HOTBAR_CATEGORY_QUICKSLOT_WHEEL),
+          HH.Part(HOTBAR_CATEGORY_ALLY_WHEEL),
+          HH.Part(HOTBAR_CATEGORY_MEMENTO_WHEEL),
+          HH.Part(HOTBAR_CATEGORY_TOOL_WHEEL),
+          HH.Part(HOTBAR_CATEGORY_EMOTE_WHEEL)
+        })
+      end
+    }
+  end
   --Category
   panel:AddSetting {
     type = LAM.ST_DROPDOWN,
@@ -509,6 +511,30 @@ if #houseItems > 0 then
         panel:UpdateControls()
       end
     end,
+  }
+  if not ZO_IsConsoleUI() then
+    --Configured
+    panel:AddSetting {
+      type = LAM.ST_SECTION,
+      label = HH.Lang.WHEEL_DESC,
+    }
+    panel:AddSetting {
+      type = LAM.ST_LABEL,
+      label = function()
+        return table.concat({
+          HH.Part(HOTBAR_CATEGORY_QUICKSLOT_WHEEL),
+          HH.Part(HOTBAR_CATEGORY_ALLY_WHEEL),
+          HH.Part(HOTBAR_CATEGORY_MEMENTO_WHEEL),
+          HH.Part(HOTBAR_CATEGORY_TOOL_WHEEL),
+          HH.Part(HOTBAR_CATEGORY_EMOTE_WHEEL)
+        })
+      end
+    }
+  end
+  --Breakpoint
+  panel:AddSetting {
+    type = LAM.ST_SECTION,
+    label = " ",
   }
   else
     panel:AddSetting {
